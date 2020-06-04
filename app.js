@@ -1,3 +1,4 @@
+var faker=require('faker')
 var mysql=require('mysql');
 var connection = mysql.createConnection({
   host     : '*****',
@@ -14,4 +15,12 @@ connection.query(q, function (error, results, fields) {
   console.log(results[0].date);
   console.log(results[0].now);
 });
+//inserting uniquw mail id via faker package
+var person={mail: faker.internet.email()}
+connection.query("Insert into user set ?",person, function (error, result) {
+  if (error) throw error;
+  console.log("succesfully added");
+});
+
+
 connection.end();
