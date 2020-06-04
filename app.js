@@ -4,6 +4,7 @@ var connection = mysql.createConnection({
   user     : '****',    
   password :'****', // your root username
   database :'****'   // the name of your db
+
 });
 
 var q = 'SELECT CURTIME() as time, CURDATE() as date, NOW() as now';
