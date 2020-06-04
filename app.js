@@ -1,9 +1,10 @@
 var mysql=require('mysql');
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : '******',    
-  password :'********', // your root username
-  database :'*******'   // the name of your db
+  host     : '*****',
+  user     : '****',    
+  password :'****', // your root username
+  database :'****'   // the name of your db
+
 });
 
 var q = 'SELECT CURTIME() as time, CURDATE() as date, NOW() as now';
