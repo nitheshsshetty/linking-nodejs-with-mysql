@@ -1,5 +1,7 @@
-# linking-nodejs-with-mysql
+
 connecting the nodejs with mysql DB 
+
+
 Commands:
 -------------------
 sudo apt-get install mysql-server
