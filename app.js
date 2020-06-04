@@ -34,5 +34,33 @@ connection.query("Insert into user set ?",person, function (error, result) {
   console.log("succesfully added");
 });
 
+//Inserting lots of data
+for(i=0;i<500;i++){
+	
+var person={mail: faker.internet.email(),
+		   created_at:faker.date.past()}
+connection.query("Insert into user set ?",person, function (error, result) {
+  if (error) throw error;
+  console.log("succesfully added");
+});
+}
+
+//inserting lots of data with more efficiency
+
+var data = [];
+for(var i = 0; i < 500; i++){
+    data.push([
+        faker.internet.email(),
+        faker.date.past()
+    ]);
+}
+ 
+ 
+var q = 'INSERT INTO users (email, created_at) VALUES ?';
+ 
+connection.query(q, [data], function(err, result) {
+  console.log(err);
+  console.log(result);
+});
 
 connection.end();
