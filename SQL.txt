@@ -1,0 +1,154 @@
+mysql-ctl cli; |  set sql_mode='' | SHOW WARNINGS;
+---------------------
+SHOW databases; #lists all db present
+SELECT database(); #Display current db being used
+CREATE DATABASE database_name; 
+DROP DATABASE database_name;
+USE <database name>;
+----------------------
+SHOW TABLES;
+SHOW COLUMNS FROM tablename;   or   DESC tablename;
+DROP TABLE <tablename>;
+--------------Create TABLE--------------
+CREATE TABLE tablename
+      (
+        column_name data_type 
+			NOT NULL|NULL 
+			DEFAULT 'unnamed'
+			PRIMARY KEY | PRIMARY KEY(colname) 
+			AUTO_INCREMENT
+      ); 
+----------Insert into Tables---------
+ INSERT INTO table_name 
+                (column_name, column_name) 
+    VALUES      (value, value), 
+                (value, value), 
+                (value, value);
+-------------Alias AS------------------
+SELECT name AS Newname FROM tbl_name; 
+
+--------------Update Table------------
+
+UPDATE table_name 
+SET newvalue 
+WHERE condition;
+
+----------------Delete-----------------
+DELETE FROM tablename WHERE condition;
+DELETE FROM tablename
+
+------------String operation---------
+
+1.CONCAT  
+SELECT CONCAT(X,Y,Z) #CONCAT takes two or more arguments
+==
+2.CONCAT_WS('symbol',colname1,colname2..)
+==
+3.SELECT SUBSTR(col, 1, 10) AS x FROM tble;
+==
+4.SELECT REPLACE(COL, 'e ', '3') FROM table;
+==
+5.SELECT CHAR_LENGTH();
+==
+6.SELECT UPPER("")|LOWER("")  #UPPER only takes one argument
+==
+7.SELECT DISTINCT author_lname FROM books;
+==
+8.SELECT author_lname FROM books ORDER BY author_lname; #by default ASC but u can use for opposite DESC;
+==
+9.SELECT title, released_year FROM books 
+ORDER BY released_year DESC LIMIT 5;#top 5 rows with offset LIMIT 5,7 #stating from 5th row 7 rows to display
+==
+10.select * from books WHERE author_fname LIKE '%da%' 
+WHERE title LIKE '%\%%'#when we need to search forthe % use prefix\
+==
+11.SELECT COUNT(*) FROM books;
+==
+12.SELECT author_fname,
+       author_lname,
+       Sum(pages) | MAX(pages) | MIN(pages) |AVG(pages)
+FROM books
+GROUP BY
+    author_lname,
+    author_fname;
+
+---------------date n time--------------
+13.select CURDATE() #returns current date
+	  CURTIME() #returns current time
+	  NOW() #returs current date n time
+	  DAY() #returns day od date
+	  DAYNAME() #returns day name frm date
+	  DAYOFWEEK() #returns day in terms of week
+	  DAYOFYEAR() #returns julian date
+	  MONTH()  #return month from datime
+	  MONTHNAME() #returns name of the month fro dtime
+	  HOUR() #returns houes from dtm=ime
+
+
+14.	  DATE_FORMAT(COL,SPECIFIER)  
+	  SELECT DATE_FORMAT(birthdt, '%m/%d/%Y at %h:%i') FROM people; # Extract datetime 
+	  SELECT DATEDIFF(NOW(), birthdate) FROM people; #calculate diffirence
+	  SELECT birthdt, DATE_ADD(birthdt, INTERVAL 1 MONTH) FROM people; #add date time 
+	  SELECT birthdt, birthdt + INTERVAL 15 MONTH + INTERVAL 10 HOUR FROM#mutiple additon od date time
+-----------------------------------Timestamp-------------------------------
+
+15.CREATE TABLE comments2 (
+    content VARCHAR(100),
+    changed_at TIMESTAMP DEFAULT NOW() ON UPDATE NOW() ); #it notes the time when content is created and update in time stamp
+
+----------------------------------OPERATORS----------------------------------
+16. != | NOT LIKE | > | < | AND | OR | BETWEEN |IN,NOT IN| CASE stmt
+		IN : WHERE author_lname IN | NOT IN ('Carver', 'Lahiri', 'Smith');
+
+-----------------------------------CASE stmt-----------------------------------
+SELECT title, released_year,
+       CASE 
+         WHEN released_year >= 2000 THEN 'Modern Lit'
+	 WHEN released_year >= 2000 THEN 'Modern Lit'
+	 ELSE '20th Century Lit'
+       END AS GENRE
+FROM books;
+
+
+SELECT 
+CASE WHEN A + B > C AND A+C>B AND B+C>A THEN 
+    CASE WHEN A = B AND B = C THEN 'Equilateral'
+        WHEN A = B OR B = C OR A = C THEN 'Isosceles' 
+        WHEN A != B OR B != C OR A != C THEN 'Scalene' 
+    END 
+ELSE 'Not A Triangle' 
+END 
+FROM TRIANGLES;
+
+--------------------------------Foreign Key------------- WORKING WITH ON DELETE CASCADE-------------
+17.    customer_id INT,
+    FOREIGN KEY(customer_id) REFERENCES customers(id) ON DELETE CASCADE 	#Delete cascade is usefulwhen we want to delete the data from 
+										base table such that the referenced data in other table also get delted simultaneously
+-------------------------------IMPLICIT INNER JOIN--------------------------
+18. 
+    SELECT * FROM customers, orders 
+    WHERE customers.id = orders.customer_id;
+-------------------------------EXPLICIT INNER JOIN-------------------------
+19.
+    SELECT * 
+    FROM customers
+    INNER JOIN order             #also JOIN is possible
+    ON  customers.id = orders.customer_id;
+---------------------------------LEFT JOIN----------------------------------
+20. 
+    SELECT first_name,
+     last_name,
+     order_date,
+     IFNULL(SUM(amount),0) AS Amount
+
+     FROM customers
+     LEFT JOIN orders
+     ON  customers.id = orders.customer_id
+     group by customers.id;
+
+-----------------------------------Having-------------------------------
+21.
+
+SELECT Student, SUM(score) AS total FROM Marks GROUP BY Student
+
+HAVING total > 70 #used on aggreated result where WHERE is used on idvidual clause
